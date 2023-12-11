@@ -1,7 +1,7 @@
 name: speedtest
-version: 1.0.0
+version: 1.0.1
 repositories:
-  - apt_entry: "deb https://packagecloud.io/ookla/speedtest-cli/debian/ bullseye main" 
+  - apt_entry: "deb https://packagecloud.io/ookla/speedtest-cli/debian/ bookworm main" 
     gpg_key: "ookla_speedtest-cli-archive-keyring.gpg"
 packages:
   - speedtest
