@@ -1,0 +1,36 @@
+- name: Copy speedtest GPG repo key
+  ansible.builtin.copy:
+    src: files/ookla_speedtest-cli-archive-keyring.gpg
+    dest: "{{ vyos_install_root }}/usr/share/keyrings/ookla_speedtest-cli-archive-keyring"
+    mode: '0644'
+
+- name: Dearmour speedtest GPG key
+  ansible.builtin.command: chroot {{ vyos_install_root }} gpg --dearmor /usr/share/keyrings/ookla_speedtest-cli-archive-keyring
+
+- name: Copy speedtest repo config
+  ansible.builtin.template:
+    src: templates/ookla-speedtest.list.j2
+    dest: "{{ vyos_install_root }}/etc/apt/sources.list.d/ookla-speedtest.list"
+    mode: '0644'
+
+- name: apt-get update
+  command: chroot {{ vyos_install_root }} apt-get update
+
+- name: install speedtest
+  command: chroot {{ vyos_install_root }} apt-get install -y speedtest
+  
+- name: apt-get clean
+  command: chroot {{ vyos_install_root }} apt-get clean
+
+- name: delete apt lists from cache
+  command: chroot {{ vyos_install_root }} rm -rf /var/lib/apt/lists/
+
+- name: Delete ookla-speedtest.list
+  file:
+    path: "{{ vyos_install_root }}/etc/apt/sources.list.d/ookla-speedtest.list"
+    state: absent
+
+- name: Delete ookla_speedtest-cli-archive-keyring.gpg
+  file:
+    path: "{{ vyos_install_root }}/usr/share/keyrings/ookla_speedtest-cli-archive-keyring.gpg"
+    state: absent
