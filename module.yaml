@@ -1,7 +1,7 @@
-name: speedtest
-version: 1.0.1
-repositories:
-  - apt_entry: "deb https://packagecloud.io/ookla/speedtest-cli/debian/ bookworm main" 
-    gpg_key: "ookla_speedtest-cli-archive-keyring.gpg"
-packages:
-  - speedtest
+version: 2
+metadata:
+  name: speedtest
+spec:
+  patches_core: false
+  ansible_roles:
+    - speedtest
